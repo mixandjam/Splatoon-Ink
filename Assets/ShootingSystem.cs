@@ -34,6 +34,8 @@ public class ShootingSystem : MonoBehaviour
                 Vector3 localPos = parentController.localPosition;
                 parentController.DOLocalMove(localPos - new Vector3(0, 0, .1f), .03f)
                     .OnComplete(() => parentController.DOLocalMove(localPos,.1f).SetEase(Ease.OutSine));
+
+                freeLookCamera.GetComponent<CinemachineImpulseSource>().GenerateImpulse();
             }
 
             if (!DOTween.IsTweening(splatGunNozzle))
