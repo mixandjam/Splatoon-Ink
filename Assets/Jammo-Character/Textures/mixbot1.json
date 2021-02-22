@@ -1,0 +1,30 @@
+{
+    "format": {
+        "version": "1.0"
+    },
+    "shaders": {
+        "Main shader": {
+            "parameters": {
+                "Common Parameters": {
+                    "ao_intensity": 0.75,
+                    "emissive_intensity": 1,
+                    "horizonFade": 1.2999999523162842,
+                    "nbSamples": 16
+                },
+                "Parallax Occlusion Mapping": {
+                    "maxPOMSamples": 16,
+                    "minPOMSamples": 4,
+                    "pomStrength": 1,
+                    "usePOM": false
+                }
+            },
+            "shader": "pbr-metal-rough-with-alpha-blending",
+            "shaderInstance": "Main shader"
+        }
+    },
+    "texturesets": {
+        "mixbox": {
+            "shader": "Main shader"
+        }
+    }
+}
