@@ -11403,7 +11403,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 869074592}
-  m_LocalRotation: {x: 0.091147535, y: 0.024104299, z: -0.0022068834, w: 0.9955432}
+  m_LocalRotation: {x: 0.09112676, y: 0.03213698, z: -0.00294232, w: 0.99531627}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -11508,7 +11508,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 906262002}
-  m_LocalRotation: {x: 0.05492434, y: 0.02416856, z: -0.0013298399, w: 0.9981971}
+  m_LocalRotation: {x: 0.05491182, y: 0.032222655, z: -0.0017730044, w: 0.99796957}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -11701,6 +11701,7 @@ GameObject:
   - component: {fileID: 949289641}
   - component: {fileID: 949289640}
   - component: {fileID: 949289642}
+  - component: {fileID: 949289643}
   m_Layer: 4
   m_Name: Particle System
   m_TagString: Untagged
@@ -11744,7 +11745,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8f366e22ce83f8046af5d649fb111607, type: 2}
+  - {fileID: 2100000, guid: e7b8326262253394caa8c9c39653fc4f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11765,7 +11766,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_RenderMode: 4
+  m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
   m_MaxParticleSize: 0.5
@@ -11775,7 +11776,7 @@ ParticleSystemRenderer:
   m_SortingFudge: 0
   m_NormalDirection: 1
   m_ShadowBias: 0
-  m_RenderAlignment: 4
+  m_RenderAlignment: 0
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
   m_UseCustomVertexStreams: 0
@@ -12042,8 +12043,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.2
-      minScalar: 0.05
+      scalar: 1.2
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -16531,6 +16532,19 @@ MonoBehaviour:
   maxRadius: 2
   strength: 1
   hardness: 0.01
+--- !u!114 &949289643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949289638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 302a675dd757afc4997a7f4c5d7c71fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _particleSystem: {fileID: 949289641}
 --- !u!1 &1011058238
 GameObject:
   m_ObjectHideFlags: 0
@@ -17160,7 +17174,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687258581}
-  m_LocalRotation: {x: 0.09114752, y: 0.024104303, z: -0.0022068832, w: 0.9955432}
+  m_LocalRotation: {x: 0.091126755, y: 0.032136988, z: -0.00294232, w: 0.99531627}
   m_LocalPosition: {x: 0, y: 2.5, z: -7.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -17569,7 +17583,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2101118512}
-  m_LocalRotation: {x: 0.09114758, y: 0.0241043, z: -0.0022068843, w: 0.9955432}
+  m_LocalRotation: {x: 0.09112676, y: 0.03213698, z: -0.00294232, w: 0.99531627}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
