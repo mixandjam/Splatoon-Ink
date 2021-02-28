@@ -19,16 +19,20 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_01612b2f09a24a9c9879c83799445b96:
+        m_Texture: {fileID: 2800000, guid: 90fa52e833fedfb4b8b3dbe10e96a30e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - Texture2D_1e8bf045296a4f2fa636cd34c4384e49:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_3c9e15eb8c374e0495f36ea3d57473ab:
-        m_Texture: {fileID: 2800000, guid: fab85e0cacda9644a99e5182a86b71f5, type: 3}
+        m_Texture: {fileID: 2800000, guid: 915fce885e7a6a541b08b09e903e8a15, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_41271c3c5f484ca2a435c65087a81705:
-        m_Texture: {fileID: 2800000, guid: 87ce03bd447ccce48bbff87ac0d8355f, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7f7b302eddb0edd49afe4248035a7b56, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_9b6a369b9e8747268b99217d44bc2166:
@@ -54,14 +58,16 @@ Material:
     m_Floats:
     - BOOLEAN_7537779AF731407FB2B8FA45F3CE7497: 0
     - Vector1_0de750b9c41b4a5daef844a1599f5ac7: 0.01
-    - Vector1_2871f666316541908d110962eef07f02: 80
+    - Vector1_2871f666316541908d110962eef07f02: 40
     - Vector1_2c6f3ce4bba145b09c0a22fced0d7f85: 0
     - Vector1_7bf270fe91494824b4209d2dc1faae23: 0.9
-    - Vector1_8e760635099b4147956bb9600d13cac2: 0.2
+    - Vector1_8e760635099b4147956bb9600d13cac2: 0.15
     - Vector1_b160a6374fb04a77b114bb611b8c55e4: 0
-    - Vector1_b5cc7f6f25194a778cb438f45fbbce66: 10
+    - Vector1_b5cc7f6f25194a778cb438f45fbbce66: 15
     - Vector1_dcd729e4cd23406784678484c17def53: 1
+    - Vector1_f6677799b193415b8be7686b658a6e85: 8
     m_Colors:
+    - Color_1bf9c5e6f5c34360a490da1c94e6a7c1: {r: 3.3630843, g: 3.3630843, b: 3.3630843, a: 0.9647059}
     - Color_24a50704e3864d6797516f661edd7e3e: {r: 1, g: 0, b: 0, a: 0}
     - Color_863351f5ceea4c998ef51baab6dd758b: {r: 1, g: 1, b: 1, a: 1}
     - Color_d4f8c892e7d64512950150bf7ed32110: {r: 0.15395562, g: 1, b: 0.08962262, a: 0}
