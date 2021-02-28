@@ -99,6 +99,7 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
+    - _DensityThreshold: 0.3
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -120,7 +121,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - Vector3_ff841d114cec48548b0a41259e363307: {r: 0, g: 0, b: 0, a: 0}
-    - _Albedo: {r: 0, g: 0.30317068, b: 1, a: 0}
+    - _Albedo: {r: 1, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Emission: {r: 0, g: 0, b: 0, a: 0}

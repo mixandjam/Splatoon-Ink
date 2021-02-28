@@ -10,12 +10,7 @@ float4 _ParticlesPos[MAX_PARTICLES];
 float _ParticlesSize[MAX_PARTICLES];
 float _NumParticles;
 
-float GetDistanceSphere(float3 from, float3 center, float radius)
-{
-    return length(from - center) - radius;
-}
-
-float GetDistanceMetaball(float3 from)
+float GetDistanceMetaball(float3 from, float densityThreshold)
 {
     float sumDensity = 0;
     float sumRi = 0;
@@ -23,7 +18,7 @@ float GetDistanceMetaball(float3 from)
     for (int i = 0; i < _NumParticles; ++i)
     {
         float4 center = _ParticlesPos[i];
-        float radius = 0.3 * _ParticlesSize[i];
+        float radius = 0.5 * _ParticlesSize[i];
         float r = length(center - from);
         if (r <= radius)
         {
@@ -33,60 +28,22 @@ float GetDistanceMetaball(float3 from)
         sumRi += radius;
     }
 
-    return max(minDistance, (0.2 - sumDensity) / (3 / 2.0 * sumRi));
+    return max(minDistance, (densityThreshold - sumDensity) / (3 / 2.0 * sumRi));
 }
 
-float3 CalculateNormalMetaball(float3 from)
+float3 CalculateNormalMetaball(float3 from, float densityThreshold)
 {
     float delta = 10e-5;
     float3 normal = float3(
-        GetDistanceMetaball(from + float3(delta, 0, 0)) - GetDistanceMetaball(from + float3(-delta, 0, 0)),
-        GetDistanceMetaball(from + float3(0, delta, 0)) - GetDistanceMetaball(from + float3(-0, -delta, 0)),
-        GetDistanceMetaball(from + float3(0, 0, delta)) - GetDistanceMetaball(from + float3(0, 0, -delta))
+        GetDistanceMetaball(from + float3(delta, 0, 0), densityThreshold) - GetDistanceMetaball(from + float3(-delta, 0, 0), densityThreshold),
+        GetDistanceMetaball(from + float3(0, delta, 0), densityThreshold) - GetDistanceMetaball(from + float3(-0, -delta, 0), densityThreshold),
+        GetDistanceMetaball(from + float3(0, 0, delta), densityThreshold) - GetDistanceMetaball(from + float3(0, 0, -delta), densityThreshold)
     );
     return normalize(normal);
 }
 
 
-void SphereTraceSphereP1_float(float3 WorldPosition, float3 ObjectPosition, out float Alpha)
-{
-    #if defined(SHADERGRAPH_PREVIEW)
-    Alpha = 1;
-    #else
-    float maxDistance = 100;
-    float threshold = 0.00001;
-    float t = 0;
-    int numSteps = 0;
-    
-    float outAlpha = 0;
-    
-    float3 viewPosition = GetCurrentViewPosition();
-    half3 viewDir = SafeNormalize(WorldPosition - viewPosition);
-    while (t < maxDistance)
-    {
-        float minDistance = 1000000;
-        float3 from = viewPosition + t * viewDir;
-        float d = GetDistanceSphere(from, float3(0, 0, 0), 0.2);
-        if (d < minDistance)
-        {
-            minDistance = d;
-        }
-    
-        if (minDistance <= threshold * t)
-        {
-            outAlpha = 1;
-            break;
-        }
-    
-        t += minDistance;
-        ++numSteps;
-    }
-    
-    Alpha = outAlpha;
-    #endif
-}
-
-void SphereTraceMetaballs_float(float3 WorldPosition, out float3 PositionWS, out float3 NormalWS, out float Alpha,
+void SphereTraceMetaballs_float(float3 WorldPosition, float DensityThreshold, out float3 PositionWS, out float3 NormalWS, out float Alpha,
     out float3 ViewDirection)
 {
     #if defined(SHADERGRAPH_PREVIEW)
@@ -108,7 +65,7 @@ void SphereTraceMetaballs_float(float3 WorldPosition, out float3 PositionWS, out
     {
         float minDistance = 1000000;
         float3 from = viewPosition + t * viewDir;
-        float d = GetDistanceMetaball(from);
+        float d = GetDistanceMetaball(from, DensityThreshold);
         if (d < minDistance)
         {
             minDistance = d;
@@ -117,7 +74,7 @@ void SphereTraceMetaballs_float(float3 WorldPosition, out float3 PositionWS, out
         if (minDistance <= threshold * t)
         {
             PositionWS = from;
-            NormalWS = CalculateNormalMetaball(from);
+            NormalWS = CalculateNormalMetaball(from, DensityThreshold);
             ViewDirection = viewDir;
             outAlpha = 1;
             break;
@@ -131,7 +88,7 @@ void SphereTraceMetaballs_float(float3 WorldPosition, out float3 PositionWS, out
     #endif
 }
 
-void SphereTraceMetaballs_half(half3 WorldPosition, half3 CameraPosition, out half3 PositionWS, out half3 NormalWS,
+void SphereTraceMetaballs_half(half3 WorldPosition, float DensityThreshold, out half3 PositionWS, out half3 NormalWS,
     out half Alpha, out half3 ViewDirection)
 {
     #if defined(SHADERGRAPH_PREVIEW)
@@ -152,8 +109,8 @@ void SphereTraceMetaballs_half(half3 WorldPosition, half3 CameraPosition, out ha
     while (t < maxDistance)
     {
         half minDistance = 1000000;
-        half3 from = CameraPosition + t * viewDir;
-        half d = GetDistanceMetaball(from);
+        half3 from = viewPosition + t * viewDir;
+        half d = GetDistanceMetaball(from, DensityThreshold);
         if (d < minDistance)
         {
             minDistance = d;
@@ -162,7 +119,7 @@ void SphereTraceMetaballs_half(half3 WorldPosition, half3 CameraPosition, out ha
         if (minDistance <= threshold * t)
         {
             PositionWS = from;
-            NormalWS = CalculateNormalMetaball(from);
+            NormalWS = CalculateNormalMetaball(from, DensityThreshold);
             ViewDirection = viewDir;
             outAlpha = 1;
             break;
