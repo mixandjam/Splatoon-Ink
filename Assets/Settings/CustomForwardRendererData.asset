@@ -53,7 +53,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   blitMaterial: {fileID: 2100000, guid: ba62d2f9845041e498edc0cfd32a8813, type: 2}
-  blurMaterial: {fileID: 2100000, guid: 0359b9610290c564e9a85a22826ef73f, type: 2}
   renderObjectsSettings:
     passTag: RenderMetaballs
     Event: 400
@@ -80,6 +79,7 @@ MonoBehaviour:
       restoreCamera: 1
       offset: {x: 0, y: 0, z: 0, w: 0}
       cameraFieldOfView: 60
+  downsamplingAmount: 4
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0

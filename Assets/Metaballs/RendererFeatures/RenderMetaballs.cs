@@ -16,10 +16,10 @@ public class RenderMetaballs : ScriptableRendererFeature
         int _metaballRTLargeId;
         int _metaballRTLarge2Id;
         
+        int _downsamplingAmount = 4;
+        
         public Material BlitMaterial;
         public Material BlurMaterial;
-        public Material BlitCopyMaterial;
-        public Material BlitCopyWithDepthMaterial;
         public Material BlitCopyDepthMaterial;
 
         RenderTargetIdentifier _metaballRTSmall;
@@ -31,7 +31,6 @@ public class RenderMetaballs : ScriptableRendererFeature
         RenderQueueType renderQueueType;
         FilteringSettings m_FilteringSettings;
         RenderObjects.CustomCameraSettings m_CameraSettings;
-        string m_ProfilerTag;
         ProfilingSampler m_ProfilingSampler;
 
         public Material overrideMaterial { get; set; }
@@ -42,11 +41,10 @@ public class RenderMetaballs : ScriptableRendererFeature
         RenderStateBlock m_RenderStateBlock;
 
         public RenderMetaballsPass(string profilerTag, RenderPassEvent renderPassEvent, string[] shaderTags,
-            RenderQueueType renderQueueType, int layerMask, RenderObjects.CustomCameraSettings cameraSettings)
+            RenderQueueType renderQueueType, int layerMask, RenderObjects.CustomCameraSettings cameraSettings, int downsamplingAmount)
         {
             profilingSampler = new ProfilingSampler(nameof(RenderObjectsPass));
 
-            m_ProfilerTag = profilerTag;
             m_ProfilingSampler = new ProfilingSampler(profilerTag);
             this.renderPassEvent = renderPassEvent;
             this.renderQueueType = renderQueueType;
@@ -73,9 +71,9 @@ public class RenderMetaballs : ScriptableRendererFeature
             m_RenderStateBlock = new RenderStateBlock(RenderStateMask.Nothing);
             m_CameraSettings = cameraSettings;
 
-            BlitCopyMaterial = new Material(Shader.Find("Hidden/BlitCopy"));
-            BlitCopyWithDepthMaterial = new Material(Shader.Find("Hidden/BlitCopyWithDepth"));
             BlitCopyDepthMaterial = new Material(Shader.Find("Hidden/BlitToDepth"));
+            BlurMaterial = new Material(Shader.Find("Hidden/KawaseBlur"));
+            _downsamplingAmount = downsamplingAmount;
         }
 
         // This method is called before executing the render pass.
@@ -86,8 +84,8 @@ public class RenderMetaballs : ScriptableRendererFeature
         public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
         {
             RenderTextureDescriptor smallBlitTargetDescriptor = renderingData.cameraData.cameraTargetDescriptor;
-            smallBlitTargetDescriptor.width /= 4;
-            smallBlitTargetDescriptor.height /= 4;
+            smallBlitTargetDescriptor.width /= _downsamplingAmount;
+            smallBlitTargetDescriptor.height /= _downsamplingAmount;
             smallBlitTargetDescriptor.colorFormat = RenderTextureFormat.ARGB32;
             
             RenderTextureDescriptor largeBlitTargetDescriptor = renderingData.cameraData.cameraTargetDescriptor;
@@ -119,13 +117,6 @@ public class RenderMetaballs : ScriptableRendererFeature
         // You don't have to call ScriptableRenderContext.submit, the render pipeline will call it at specific points in the pipeline.
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
-            /*
-            CommandBuffer cmd = CommandBufferPool.Get();
-            Blit(cmd, _source, _destination, BlitMaterial);
-            context.ExecuteCommandBuffer(cmd);
-            CommandBufferPool.Release(cmd);
-            */
-
             SortingCriteria sortingCriteria = (renderQueueType == RenderQueueType.Transparent)
                 ? SortingCriteria.CommonTransparent
                 : renderingData.cameraData.defaultOpaqueSortFlags;
@@ -199,19 +190,18 @@ public class RenderMetaballs : ScriptableRendererFeature
     }
 
     public Material blitMaterial;
-    public Material blurMaterial;
     RenderMetaballsPass _scriptableMetaballsPass;
     public RenderObjects.RenderObjectsSettings renderObjectsSettings = new RenderObjects.RenderObjectsSettings();
+    [Range(1, 16)] public int downsamplingAmount;
 
     /// <inheritdoc/>
     public override void Create()
     {
         RenderObjects.FilterSettings filter = renderObjectsSettings.filterSettings;
         _scriptableMetaballsPass = new RenderMetaballsPass(renderObjectsSettings.passTag, renderObjectsSettings.Event,
-            filter.PassNames, filter.RenderQueueType, filter.LayerMask, renderObjectsSettings.cameraSettings)
+            filter.PassNames, filter.RenderQueueType, filter.LayerMask, renderObjectsSettings.cameraSettings, downsamplingAmount)
         {
             BlitMaterial = blitMaterial,
-            BlurMaterial = blurMaterial
         };
     }
 

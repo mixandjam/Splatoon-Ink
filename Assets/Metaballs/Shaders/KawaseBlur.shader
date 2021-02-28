@@ -1,4 +1,4 @@
-Shader "Custom/KawaseBlur"
+Shader "Hidden/KawaseBlur"
 {
     Properties
     {
