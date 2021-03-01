@@ -77,7 +77,7 @@ Shader "Hidden/KawaseBlur"
     
                 fixed4 color = tex2D(_MainTex, uv);
                 color = applyBlur(color, uv, texelResolution, _Offsets.x);
-                color.a = applyAlphaBlur(color, uv, texelResolution, _Offsets.y);
+                color = applyBlur(color, uv, texelResolution, _Offsets.y);
                 color.a = applyAlphaBlur(color, uv, texelResolution, _Offsets.z);
                 //color.a = applyAlphaBlur(color, uv, texelResolution, _Offsets.w);
                 

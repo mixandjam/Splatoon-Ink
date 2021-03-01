@@ -79,7 +79,7 @@ MonoBehaviour:
       restoreCamera: 1
       offset: {x: 0, y: 0, z: 0, w: 0}
       cameraFieldOfView: 60
-  downsamplingAmount: 8
+  downsamplingAmount: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,10 +110,10 @@ MonoBehaviour:
     materialErrorPS: {fileID: 4800000, guid: 5fd9a8feb75a4b5894c241777f519d4e, type: 3}
   m_OpaqueLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 47
   m_TransparentLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 47
   m_DefaultStencilState:
     overrideStencilState: 0
     stencilReference: 0
