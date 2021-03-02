@@ -48,6 +48,7 @@ public class ShootingSystem : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(0))
         {
+            inkParticle.Clear();
             inkParticle.Play();
             extraParticle.Play();
         }

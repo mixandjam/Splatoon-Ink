@@ -101,7 +101,7 @@ MonoBehaviour:
     passTag: RenderMetaballsScreenSpace
     Event: 400
     filterSettings:
-      RenderQueueType: 0
+      RenderQueueType: 1
       LayerMask:
         serializedVersion: 2
         m_Bits: 16

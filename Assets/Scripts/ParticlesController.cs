@@ -16,9 +16,9 @@ public class ParticlesController: MonoBehaviour{
     void Start(){
         part = GetComponent<ParticleSystem>();
         collisionEvents = new List<ParticleCollisionEvent>();
-        var pr = part.GetComponent<ParticleSystemRenderer>();
-        Color c = new Color(pr.material.color.r, pr.material.color.g, pr.material.color.b, .8f);
-        paintColor = c;
+        //var pr = part.GetComponent<ParticleSystemRenderer>();
+        //Color c = new Color(pr.material.color.r, pr.material.color.g, pr.material.color.b, .8f);
+        //paintColor = c;
     }
 
     void OnParticleCollision(GameObject other) {
