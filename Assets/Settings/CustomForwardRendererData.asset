@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Name: RenderMetaballsScreenSpace
   m_EditorClassIdentifier: 
   m_Active: 1
-  blitMaterial: {fileID: 2100000, guid: ba62d2f9845041e498edc0cfd32a8813, type: 2}
+  blitMaterial: {fileID: 2100000, guid: 95391282e3f31ef4dada9756b388d99d, type: 2}
   renderObjectsSettings:
     passTag: RenderMetaballsScreenSpace
     Event: 400
