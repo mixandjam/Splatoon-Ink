@@ -22,6 +22,7 @@
             float _Hardness;
             float _Strength;
             float4 _PainterColor;
+            float _PrepareUV;
 
             struct appdata{
                 float4 vertex : POSITION;
@@ -49,7 +50,11 @@
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target{            
+            fixed4 frag (v2f i) : SV_Target{   
+                if(_PrepareUV > 0 ){
+                    return float4(0, 0, 1, 1);
+                }         
+
                 float4 col = tex2D(_MainTex, i.uv);
                 float f = mask(i.worldPos, _PainterPosition, _Radius, _Hardness);
                 float edge = f * _Strength;

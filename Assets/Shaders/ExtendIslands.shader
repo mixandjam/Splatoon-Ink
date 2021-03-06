@@ -1,6 +1,8 @@
 ﻿Shader "TNTC/ExtendIslands"{
     Properties{
         _MainTex ("Texture", 2D) = "white" {}
+        _UVIslands ("Texture UVIsalnds", 2D) = "white" {}
+        _OffsetUV ("UVOffset", float) = 1
     }
 
     SubShader{
@@ -28,6 +30,8 @@
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float4 _MainTex_TexelSize;
+            float _OffsetUV;
+            sampler2D _UVIslands;
 
             v2f vert (appdata v){
                 v2f o;
@@ -37,19 +41,20 @@
             }
 
             fixed4 frag (v2f i) : SV_Target{
-                float2 offsets[8] = {float2(-1,0), float2(1,0), float2(0,1), float2(0,-1), float2(-1,1), float2(1,1), float2(1,-1), float2(-1,-1)};
+                float2 offsets[8] = {float2(-_OffsetUV, 0), float2(_OffsetUV, 0), float2(0, _OffsetUV), float2(0, -_OffsetUV), float2(-_OffsetUV, _OffsetUV), float2(_OffsetUV, _OffsetUV), float2(_OffsetUV, -_OffsetUV), float2(-_OffsetUV, -_OffsetUV)};
 				float2 uv = i.uv;
 				float4 color = tex2D(_MainTex, uv);
+				float4 island = tex2D(_UVIslands, uv);
 
-				float4 extendedColor = color;
-				for	(int i = 0; i < offsets.Length; i++){
-					float2 currentUV = uv + offsets[i] * _MainTex_TexelSize.xy;
-					float4 offsettedColor = tex2D(_MainTex, currentUV);
-					extendedColor = max(offsettedColor, extendedColor);
-				}
-
-				color = extendedColor;
-
+                if(island.z < 1){
+                    float4 extendedColor = color;
+                    for	(int i = 0; i < offsets.Length; i++){
+                        float2 currentUV = uv + offsets[i] * _MainTex_TexelSize.xy;
+                        float4 offsettedColor = tex2D(_MainTex, currentUV);
+                        extendedColor = max(offsettedColor, extendedColor);
+                    }
+                    color = extendedColor;
+                }
 				return color;
             }
             ENDCG
