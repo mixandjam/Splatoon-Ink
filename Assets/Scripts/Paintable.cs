@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class Paintable : MonoBehaviour {
     const int TEXTURE_SIZE = 1024;
@@ -29,12 +28,7 @@ public class Paintable : MonoBehaviour {
         rend = GetComponent<Renderer>();
         rend.material.SetTexture(maskTextureID, extendIslandsRenderTexture);
 
-        CommandBuffer command = new CommandBuffer();
-        command.name = "CommandBuffer - " + gameObject.name;
-        command.SetRenderTarget(maskRenderTexture);
-        command.SetRenderTarget(extendIslandsRenderTexture);
-        command.SetRenderTarget(supportTexture);
-        Graphics.ExecuteCommandBuffer(command);
+        PaintManager.instance.initTextures(this);
     }
 
     void OnDisable(){

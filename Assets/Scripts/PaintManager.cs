@@ -19,11 +19,26 @@ public class PaintManager : Singleton<PaintManager>{
 
     CommandBuffer command;
 
-    void Start(){
+    public override void Awake(){
+        base.Awake();
+        
         paintMaterial = new Material(texturePaint);
         extendMaterial = new Material(extendIslands);
         command = new CommandBuffer();
         command.name = "CommmandBuffer - " + gameObject.name;
+    }
+
+    public void initTextures(Paintable paintable){
+        RenderTexture mask = paintable.getMask();
+        RenderTexture extend = paintable.getExtend();
+        RenderTexture support = paintable.getSupport();
+
+        command.SetRenderTarget(mask);
+        command.SetRenderTarget(extend);
+        command.SetRenderTarget(support);
+
+        Graphics.ExecuteCommandBuffer(command);
+        command.Clear();
     }
 
     public void paint(Paintable paintable, Vector3 pos, float radius = 1f, float hardness = .5f, float strength = .5f, Color? color = null){
