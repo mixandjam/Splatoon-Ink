@@ -30,7 +30,7 @@ Shader "Hidden/KawaseBlur"
                 float4 vertex : SV_POSITION;
             };
 
-            half4 _Offsets;
+            float _Offset;
             
             sampler2D _MainTex;
             float4 _MainTex_ST;
@@ -48,10 +48,10 @@ Shader "Hidden/KawaseBlur"
             {
                 fixed4 result = color;
                 
-                result += tex2D(_MainTex, uv + half2( offset + 0.5,  offset + 0.5) * texelResolution);
-                result += tex2D(_MainTex, uv + half2(-offset - 0.5,  offset + 0.5) * texelResolution);
-                result += tex2D(_MainTex, uv + half2(-offset - 0.5, -offset - 0.5) * texelResolution);
-                result += tex2D(_MainTex, uv + half2( offset + 0.5, -offset - 0.5) * texelResolution);
+                result += tex2D(_MainTex, uv + half2( offset,  offset) * texelResolution);
+                result += tex2D(_MainTex, uv + half2(-offset,  offset) * texelResolution);
+                result += tex2D(_MainTex, uv + half2(-offset, -offset) * texelResolution);
+                result += tex2D(_MainTex, uv + half2( offset, -offset) * texelResolution);
                 result /= 5.0h;
 
                 return result;
@@ -76,22 +76,7 @@ Shader "Hidden/KawaseBlur"
                 const half2 uv = input.uv;
     
                 fixed4 color = tex2D(_MainTex, uv);
-                color = applyBlur(color, uv, texelResolution, 1);
-                color = applyBlur(color, uv, texelResolution, 2);
-                //color = applyBlur(color, uv, texelResolution, 2);
-                //color = applyBlur(color, uv, texelResolution, 2);
-                //color = applyBlur(color, uv, texelResolution, 3);
-                //color = applyBlur(color, uv, texelResolution, 2);
-                //color = applyBlur(color, uv, texelResolution, 3);
-
-                /*
-                color = applyBlur(color, uv, texelResolution, _Offsets.x + _Offsets.w);
-                color = applyBlur(color, uv, texelResolution, _Offsets.y + _Offsets.w);
-                color = applyBlur(color, uv, texelResolution, _Offsets.z + _Offsets.w);
-                color = applyBlur(color, uv, texelResolution, _Offsets.w + _Offsets.w);
-                */
-
-                //color = saturate(smoothstep(0, 0.4, color));
+                color = applyBlur(color, uv, texelResolution, _Offset);
                 return color;
             }
             ENDCG

@@ -56,30 +56,13 @@ MonoBehaviour:
   m_Name: RenderMetaballsScreenSpace
   m_EditorClassIdentifier: 
   m_Active: 1
-  blitMaterial: {fileID: 2100000, guid: 95391282e3f31ef4dada9756b388d99d, type: 2}
-  renderObjectsSettings:
-    passTag: RenderMetaballsScreenSpace
-    Event: 350
-    filterSettings:
-      RenderQueueType: 1
-      LayerMask:
-        serializedVersion: 2
-        m_Bits: 16
-      PassNames: []
-    overrideMaterial: {fileID: 0}
-    overrideMaterialPassIndex: 0
-    overrideDepthState: 0
-    depthCompareFunction: 4
-    enableWrite: 1
-    stencilSettings:
-      overrideStencilState: 0
-      stencilReference: 0
-      stencilCompareFunction: 8
-      passOperation: 0
-      failOperation: 0
-      zFailOperation: 0
-    cameraSettings:
-      overrideCamera: 0
-      restoreCamera: 1
-      offset: {x: 0, y: 0, z: 0, w: 0}
-      cameraFieldOfView: 60
+  PassTag: RenderMetaballsScreenSpace
+  Event: 300
+  FilterSettings:
+    RenderQueueType: 1
+    LayerMask:
+      serializedVersion: 2
+      m_Bits: 16
+    PassNames: []
+  BlitMaterial: {fileID: 2100000, guid: 95391282e3f31ef4dada9756b388d99d, type: 2}
+  BlurPasses: 2

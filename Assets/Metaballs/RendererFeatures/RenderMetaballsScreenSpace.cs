@@ -18,6 +18,8 @@ public class RenderMetaballsScreenSpace : ScriptableRendererFeature
         public Material BlurMaterial;
         public Material BlitCopyDepthMaterial;
 
+        public int BlurPasses;
+
         RenderTargetIdentifier _metaballRT;
         RenderTargetIdentifier _metaballRT2;
         RenderTargetIdentifier _cameraTargetId;
@@ -25,26 +27,20 @@ public class RenderMetaballsScreenSpace : ScriptableRendererFeature
 
         RenderQueueType renderQueueType;
         FilteringSettings m_FilteringSettings;
-        RenderObjects.CustomCameraSettings m_CameraSettings;
         ProfilingSampler m_ProfilingSampler;
-
-        public Material overrideMaterial { get; set; }
-        public int overrideMaterialPassIndex { get; set; }
 
         List<ShaderTagId> m_ShaderTagIdList = new List<ShaderTagId>();
 
         RenderStateBlock m_RenderStateBlock;
 
         public RenderMetaballsScreenSpacePass(string profilerTag, RenderPassEvent renderPassEvent, string[] shaderTags,
-            RenderQueueType renderQueueType, int layerMask, RenderObjects.CustomCameraSettings cameraSettings)
+            RenderQueueType renderQueueType, int layerMask)
         {
             profilingSampler = new ProfilingSampler(nameof(RenderObjectsPass));
 
             m_ProfilingSampler = new ProfilingSampler(profilerTag);
             this.renderPassEvent = renderPassEvent;
             this.renderQueueType = renderQueueType;
-            this.overrideMaterial = null;
-            this.overrideMaterialPassIndex = 0;
             RenderQueueRange renderQueueRange = (renderQueueType == RenderQueueType.Transparent)
                 ? RenderQueueRange.transparent
                 : RenderQueueRange.opaque;
@@ -64,7 +60,6 @@ public class RenderMetaballsScreenSpace : ScriptableRendererFeature
             }
 
             m_RenderStateBlock = new RenderStateBlock(RenderStateMask.Nothing);
-            m_CameraSettings = cameraSettings;
 
             BlitCopyDepthMaterial = new Material(Shader.Find("Hidden/BlitToDepth"));
             BlurMaterial = new Material(Shader.Find("Hidden/KawaseBlur"));
@@ -109,10 +104,6 @@ public class RenderMetaballsScreenSpace : ScriptableRendererFeature
 
             DrawingSettings drawingSettings =
                 CreateDrawingSettings(m_ShaderTagIdList, ref renderingData, sortingCriteria);
-            drawingSettings.overrideMaterial = overrideMaterial;
-            drawingSettings.overrideMaterialPassIndex = overrideMaterialPassIndex;
-
-            ref CameraData cameraData = ref renderingData.cameraData;
 
             // NOTE: Do NOT mix ProfilingScope with named CommandBuffers i.e. CommandBufferPool.Get("name").
             // Currently there's an issue which results in mismatched markers.
@@ -133,32 +124,45 @@ public class RenderMetaballsScreenSpace : ScriptableRendererFeature
                 context.DrawRenderers(renderingData.cullResults, ref drawingSettings, ref m_FilteringSettings,
                     ref m_RenderStateBlock);
 
-                if (m_CameraSettings.overrideCamera && m_CameraSettings.restoreCamera)
+                context.ExecuteCommandBuffer(cmd);
+                cmd.Clear();
+
+                float offset = 1.5f;
+                //Blur
+                cmd.SetGlobalFloat("_Offset", offset);
+                Blit(cmd, _metaballRT, _metaballRT2, BlurMaterial);
+                context.ExecuteCommandBuffer(cmd);
+                cmd.Clear();
+
+                for (int i = 1; i < BlurPasses; ++i)
                 {
-                    RenderingUtils.SetViewAndProjectionMatrices(cmd, cameraData.GetViewMatrix(),
-                        cameraData.GetGPUProjectionMatrix(), false);
+                    offset += 1.0f;
+                    cmd.SetGlobalFloat("_Offset", offset);
+                    Blit(cmd, _metaballRT, _metaballRT2, BlurMaterial);
+                    context.ExecuteCommandBuffer(cmd);
+                    cmd.Clear();
+
+                    var tmpRT = _metaballRT;
+                    _metaballRT = _metaballRT2;
+                    _metaballRT2 = tmpRT;
                 }
 
-                context.ExecuteCommandBuffer(cmd);
-                cmd.Clear();
-
-                //Blur
-                cmd.SetGlobalVector("_Offsets", new Vector4(1.5f, 2.0f, 2.5f, 3.0f));
-                Blit(cmd, _metaballRT, _metaballRT2, BlurMaterial);
-                context.ExecuteCommandBuffer(cmd);
-                cmd.Clear();
-
+                /*
+                cmd.SetGlobalFloat("_Offset", 2.5f);
                 Blit(cmd, _metaballRT2, _metaballRT, BlurMaterial);
                 context.ExecuteCommandBuffer(cmd);
                 cmd.Clear();
 
+                cmd.SetGlobalFloat("_Offset", 3.5f);
                 Blit(cmd, _metaballRT, _metaballRT2, BlurMaterial);
                 context.ExecuteCommandBuffer(cmd);
                 cmd.Clear();
 
+                cmd.SetGlobalFloat("_Offset", 4.5f);
                 Blit(cmd, _metaballRT2, _metaballRT, BlurMaterial);
                 context.ExecuteCommandBuffer(cmd);
                 cmd.Clear();
+                */
 
                 //Draw to Camera Target
                 Blit(cmd, _metaballRT, _cameraTargetId, BlitMaterial);
@@ -176,19 +180,25 @@ public class RenderMetaballsScreenSpace : ScriptableRendererFeature
         }
     }
 
-    public Material blitMaterial;
+    public string PassTag = "RenderMetaballsScreenSpace";
+    public RenderPassEvent Event = RenderPassEvent.AfterRenderingOpaques;
+
+    public RenderObjects.FilterSettings FilterSettings = new RenderObjects.FilterSettings();
+
+    public Material BlitMaterial;
     RenderMetaballsScreenSpacePass _scriptableMetaballsScreenSpacePass;
-    public RenderObjects.RenderObjectsSettings renderObjectsSettings = new RenderObjects.RenderObjectsSettings();
+
+    [Range(1, 15)]
+    public int BlurPasses = 1;
 
     /// <inheritdoc/>
     public override void Create()
     {
-        RenderObjects.FilterSettings filter = renderObjectsSettings.filterSettings;
-        _scriptableMetaballsScreenSpacePass = new RenderMetaballsScreenSpacePass(renderObjectsSettings.passTag,
-            renderObjectsSettings.Event,
-            filter.PassNames, filter.RenderQueueType, filter.LayerMask, renderObjectsSettings.cameraSettings)
+        _scriptableMetaballsScreenSpacePass = new RenderMetaballsScreenSpacePass(PassTag, Event,
+            FilterSettings.PassNames, FilterSettings.RenderQueueType, FilterSettings.LayerMask)
         {
-            BlitMaterial = blitMaterial
+            BlitMaterial = BlitMaterial,
+            BlurPasses = BlurPasses
         };
     }
 
