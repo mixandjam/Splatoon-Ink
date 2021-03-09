@@ -36,6 +36,9 @@ Shader "Hidden/KawaseBlur"
             float4 _MainTex_ST;
             float4 _MainTex_TexelSize;
 
+            sampler2D _MetaballDepthRT;
+            float _BlurDistance;
+
             v2f vert (appdata v)
             {
                 v2f o;
@@ -76,7 +79,11 @@ Shader "Hidden/KawaseBlur"
                 const half2 uv = input.uv;
     
                 fixed4 color = tex2D(_MainTex, uv);
-                color = applyBlur(color, uv, texelResolution, _Offset);
+                fixed4 depth = tex2D(_MetaballDepthRT, uv);
+                if (depth.r < _BlurDistance)
+                {
+                    color = applyBlur(color, uv, texelResolution, _Offset);
+                }
                 return color;
             }
             ENDCG
