@@ -11,15 +11,16 @@ public class MovementInput : MonoBehaviour {
     public float Velocity;
     [Space]
 
-	private float InputX;
-	private float InputZ;
-	public bool blockRotationPlayer;
-	public float desiredRotationSpeed = 0.1f;
 	private Animator anim;
 	private Camera cam;
 	private CharacterController controller;
 	private bool isGrounded;
 	private Vector3 desiredMoveDirection;
+	private float InputX;
+	private float InputZ;
+
+	public bool blockRotationPlayer;
+	public float desiredRotationSpeed = 0.1f;
 
 	public float Speed;
 	public float allowPlayerRotation = 0.1f;
@@ -38,30 +39,24 @@ public class MovementInput : MonoBehaviour {
     public float verticalVel;
     private Vector3 moveVector;
 
-	// Use this for initialization
 	void Start () {
 		anim = this.GetComponent<Animator> ();
 		cam = Camera.main;
 		controller = this.GetComponent<CharacterController> ();
 	}
 	
-	// Update is called once per frame
 	void Update () {
+
 		InputMagnitude ();
 
         isGrounded = controller.isGrounded;
         if (isGrounded)
-        {
             verticalVel -= 0;
-        }
         else
-        {
             verticalVel -= 1;
-        }
+
         moveVector = new Vector3(0, verticalVel * .2f * Time.deltaTime, 0);
         controller.Move(moveVector);
-
-
     }
 
 	void PlayerMoveAndRotation() {
@@ -81,11 +76,13 @@ public class MovementInput : MonoBehaviour {
 		desiredMoveDirection = forward * InputZ + right * InputX;
 
 		if (blockRotationPlayer == false) {
+			//Camera-based Movement
 			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(desiredMoveDirection), desiredRotationSpeed);
 			controller.Move(desiredMoveDirection * Time.deltaTime * Velocity);
 		}
 		else
 		{
+			//Strafe
 			controller.Move((transform.forward * InputZ + transform.right  * InputX) * Time.deltaTime * Velocity);
 		}
 	}

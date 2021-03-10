@@ -66,5 +66,5 @@ MonoBehaviour:
     PassNames: []
   BlitMaterial: {fileID: 2100000, guid: 95391282e3f31ef4dada9756b388d99d, type: 2}
   WriteDepthMaterial: {fileID: 2100000, guid: 3abad26229f1dfe418d9152127d1e435, type: 2}
-  BlurPasses: 4
-  BlurDistance: 0.12
+  BlurPasses: 3
+  BlurDistance: 0.54
