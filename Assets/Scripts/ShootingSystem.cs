@@ -30,7 +30,7 @@ public class ShootingSystem : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             VisualPolish();
-            GetComponent<MovementInput>().RotateToCamera(transform);
+            input.RotateToCamera(transform);
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -38,8 +38,8 @@ public class ShootingSystem : MonoBehaviour
         else if (Input.GetMouseButtonUp(0))
             inkParticle.Stop();
 
-        parentController.localEulerAngles 
-            = new Vector3(Mathf.LerpAngle(parentController.localEulerAngles.x, pressing ? RemapCamera(freeLookCamera.m_YAxis.Value, 0, 1, -25, 25) : 0,.3f), angle.y, angle.z);
+        parentController.localEulerAngles
+            = new Vector3(Mathf.LerpAngle(parentController.localEulerAngles.x, pressing ? RemapCamera(freeLookCamera.m_YAxis.Value, 0, 1, -25, 25) : 0, .3f), angle.y, angle.z);
     }
 
     void VisualPolish()
@@ -52,7 +52,7 @@ public class ShootingSystem : MonoBehaviour
             parentController.DOLocalMove(localPos - new Vector3(0, 0, .2f), .03f)
                 .OnComplete(() => parentController.DOLocalMove(localPos, .1f).SetEase(Ease.OutSine));
 
-            impulseSource.GenerateImpulse();
+           impulseSource.GenerateImpulse();
         }
 
         if (!DOTween.IsTweening(splatGunNozzle))

@@ -76,7 +76,7 @@ public class MovementInput : MonoBehaviour {
 		desiredMoveDirection = forward * InputZ + right * InputX;
 
 		if (blockRotationPlayer == false) {
-			//Camera-based Movement
+			//Camera
 			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(desiredMoveDirection), desiredRotationSpeed);
 			controller.Move(desiredMoveDirection * Time.deltaTime * Velocity);
 		}
