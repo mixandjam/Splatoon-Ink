@@ -31,7 +31,7 @@ You can see a running demo of the project in [this video](https://youtu.be/FR618
 
 ## Authors
 
-* **André Cardoso** - [Github](https://github.com/andremc)
+* **André Cardoso** - [Github](https://github.com/cardosoandre)
 <br>[![Twitter Follow](https://img.shields.io/twitter/follow/andre_mc.svg?style=social)](https://twitter.com/andre_mc)
 * **Erik and Matteo (TNTC)** - [Github](https://github.com/ToughNutToCrack)
 <br>[![Twitter Follow](https://img.shields.io/twitter/follow/tntcproject.svg?style=social)](https://twitter.com/tntcproject)
