@@ -3,7 +3,7 @@
     <img width="400px" src="http://mixandjam.com/wp-content/uploads/2019/11/git.png">    
 </p>
 
-# Splatoon's Ink System| Mix and Jam [![Discord Chat](https://img.shields.io/discord/308323056592486420.svg)](https://discord.gg/PwCzrBX) <a href="https://patreon.com/mixandjam"><img src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.herokuapp.com%2Fmixandjam" /></a>
+# Splatoon's Ink System| Mix and Jam 
 
 <p align="center">
 <img width="900px" src="http://mixandjam.com/wp-content/uploads/2021/03/banner3.png">
