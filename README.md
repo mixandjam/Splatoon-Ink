@@ -6,7 +6,7 @@
 # Splatoon's Ink System| Mix and Jam 
 
 <p align="center">
-<img width="900px" src="http://mixandjam.com/wp-content/uploads/2021/03/banner3.png">
+<img width="900px" src="https://github.com/mixandjam/Splatoon-Ink/blob/main/git-banner.png">
 </p>
 
 This is the official respository for the episode <b>#27</b> of the [Mix and Jam Youtube Channel](https://www.youtube.com/c/MixAndJam)!
